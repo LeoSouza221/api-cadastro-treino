@@ -1,25 +1,32 @@
 const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const routes = require('./routes');
-
 const app = express();
+const cors = require('cors');
 
-// conexao com o banco
-mongoose.connect('mongodb://localhost:27017/myapi', 
-    { useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true
-});
+const userRouter = require('./routes/user');
+const teacherRouter = require('./routes/teacher');
 
 // permite recebimento de parametros json
 app.use(express.json());
+
 // utiliza todas as rotas criadas no routes
-app.use(routes);
+app.use('/api/user', userRouter);
+app.use('/api/teacher', teacherRouter);
+
+// usado quando nao encontra a rota expecificada
+app.use((req, res, next) => {
+    const error = new Error('Rota nao encontrada');
+    error.status = 404;
+    next(error);
+});
+
+app.use((error, req, res, next) => {
+    res.status(error.status || 500);
+    return res.json({ 
+        error: { msg: error.message } 
+    });
+});
+
 // permite acesso da aplicacao por qualquer rota
 app.use(cors);
 
-
-
-// app rodando na porta 3333
-app.listen(3333);
+module.exports = app;

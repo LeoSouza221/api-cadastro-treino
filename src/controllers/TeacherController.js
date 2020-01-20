@@ -1,12 +1,11 @@
-const UserService = require('../services/UserService');
+const TeacherService = require('../services/TeacherService');
 
 module.exports = {
     async get(req, res) {
-
         const { page = 1 } = req.query;
-        
-        UserService.index(page)
-            .then(user => res.json(user))
+
+        TeacherService.index(page)
+            .then(teacher => res.json(teacher))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
                 res.json(error);
@@ -15,9 +14,20 @@ module.exports = {
 
     async getById(req, res) {
         const _id = req.params;
+        console.log(_id)
+        TeacherService.show(_id)
+            .then(teacher => res.json(teacher))
+            .catch(error => {
+                console.error.bind(console, `Error ${error}`); 
+                res.json(error);
+            });
+    },
 
-        UserService.show(_id)
-            .then(user => res.json(user))
+    async getByIdStudents(req, res) {
+        const _id = req.params;
+
+        TeacherService.showStudent(_id)
+            .then(students => res.json(students))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
                 res.json(error);
@@ -25,34 +35,43 @@ module.exports = {
     },
 
     async create(req, res) {
-        UserService.store(req.body)
-            .then(user => res.json(user))
+        const teacher = req.body;
+
+        TeacherService.store(teacher)
+            .then(teacher => res.json(teacher))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
                 res.json(error);
             });
     },
 
-    async update(req, res) {
-        const _id = req.params;
-        const userInfo = req.body;
-        
-        UserService.update(_id, userInfo)
-            .then(user => res.json(user))
-            .catch(error => {
-                console.error.bind(console, `Error ${error}`); 
-                res.json(error);
-            });
+    async updateStudents() {
+
     },
 
     async delete(req, res) {
         const _id = req.params;
 
-        UserService.destroy(_id)
+        TeacherService.destroy(_id)
             .then(msg => res.json(msg))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
                 res.json(error);
             });
+
     },
+
+    async deleteStudents(req, res) {
+        const _id = req.params;
+        const _idStudent = req.params;
+
+        TeacherService.destroyStudents(_id, _idStudent)
+            .then(msg => res.json(msg))
+            .catch(error => {
+                console.error.bind(console, `Error ${error}`); 
+                res.json(error);
+            });
+
+    }
+
 }

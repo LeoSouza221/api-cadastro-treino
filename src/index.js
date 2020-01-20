@@ -4,6 +4,7 @@ const cors = require('cors');
 
 const userRouter = require('./routes/user');
 const teacherRouter = require('./routes/teacher');
+const studentRouter = require('./routes/student');
 
 // permite recebimento de parametros json
 app.use(express.json());
@@ -11,6 +12,7 @@ app.use(express.json());
 // utiliza todas as rotas criadas no routes
 app.use('/api/user', userRouter);
 app.use('/api/teacher', teacherRouter);
+app.use('/api/student', studentRouter);
 
 // usado quando nao encontra a rota expecificada
 app.use((req, res, next) => {

@@ -40,7 +40,7 @@ module.exports = {
         try {
             const teacher = await Teacher.findById(_id);
             
-            return await teacher.students.push(_id);
+            return await teacher.students.push(_idStudent);
 
         } catch(err) {
             return err;
@@ -60,7 +60,7 @@ module.exports = {
     async destroyStudents(_id, _idStudent) {
         try {
             const teacher = await Teacher.findById(_id);
-            await teacher.students.pull(_id);
+            await teacher.students.pull(_idStudent);
 
             return { msg: 'Estudante removido com sucesso' };
         } catch(err) {

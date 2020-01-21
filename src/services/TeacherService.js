@@ -18,7 +18,7 @@ module.exports = {
         }
     },
 
-    async showStudent(_id, student) {
+    async showStudent(_id) {
         try {
             return await Student.find({ teacher: _id });
         } catch(err) {

@@ -46,8 +46,8 @@ module.exports = {
     },
 
     async updateStudents(req, res) {
-        const _id = req.params;
-        const _idStudent = req.params;
+        const { _id } = req.params;
+        const { _idStudent } = req.params;
 
         TeacherService.updateStudents(_id, _idStudent)
             .then(teacher => res.json(teacher))
@@ -70,11 +70,11 @@ module.exports = {
     },
 
     async deleteStudents(req, res) {
-        const _id = req.params;
-        const _idStudent = req.params;
+        const { _id } = req.params;
+        const { _idStudent } = req.params;
 
         TeacherService.destroyStudents(_id, _idStudent)
-            .then(msg => res.json(msg))
+            .then(teacher => res.json(teacher))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
                 res.json(error);

@@ -14,7 +14,7 @@ module.exports = {
 
     async getById(req, res) {
         const _id = req.params;
-        console.log(_id)
+
         TeacherService.show(_id)
             .then(teacher => res.json(teacher))
             .catch(error => {
@@ -45,8 +45,16 @@ module.exports = {
             });
     },
 
-    async updateStudents() {
+    async updateStudents(req, res) {
+        const { _id } = req.params;
+        const { _idStudent } = req.params;
 
+        TeacherService.updateStudents(_id, _idStudent)
+            .then(teacher => res.json(teacher))
+            .catch(error => {
+                console.error.bind(console, `Error ${error}`); 
+                res.json(error);
+            });
     },
 
     async delete(req, res) {
@@ -62,11 +70,11 @@ module.exports = {
     },
 
     async deleteStudents(req, res) {
-        const _id = req.params;
-        const _idStudent = req.params;
+        const { _id } = req.params;
+        const { _idStudent } = req.params;
 
         TeacherService.destroyStudents(_id, _idStudent)
-            .then(msg => res.json(msg))
+            .then(teacher => res.json(teacher))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
                 res.json(error);

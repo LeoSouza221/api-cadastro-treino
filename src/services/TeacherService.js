@@ -36,12 +36,20 @@ module.exports = {
 
     async updateStudents(_id, _idStudent) {
         try {
-            student = Student.findById(_id);
+            const { teacher } = await Student.findById(_idStudent, 'teacher'); 
+            const alreadyStudent = Teacher.find({ students: _idStudent });
 
-            console.log(student.schema);
+            if (teacher && teacher.toString() !== _id.toString()) {
+                return { msg: 'Aluno ja pertence a outro personal' };
+            }
 
-            return { msg: 'ok' };
-            return await Teacher.findOneAndUpdate(
+            if (alreadyStudent) {
+                return { msg: 'Aluno ja cadastrado' };
+            }
+
+            await Student.findByIdAndUpdate(_idStudent, { $set: { teacher: _id } }, { useFindAndModify: false, new: true });
+
+            return await Teacher.findByIdAndUpdate(
                 _id,
                 { $push: { students: _idStudent }}, 
                 { useFindAndModify: false, new: true }
@@ -55,7 +63,7 @@ module.exports = {
         try {
             await Teacher.findByIdAndRemove(_id, { useFindAndModify: false } );
 
-            return { msg: 'Professor removido com sucesso' };
+            return { msg: 'Personal removido com sucesso' };
         } catch(err) {
             return err;
         }
@@ -63,10 +71,12 @@ module.exports = {
 
     async destroyStudents(_id, _idStudent) {
         try {
-            return await Teacher.findOneAndUpdate(
+            await Student.findByIdAndUpdate(_idStudent, { $set: { teacher: null } }, { useFindAndModify: false });
+            
+            return await Teacher.findByIdAndUpdate(
                 _id,
                 { $pull: { students: _idStudent }},
-                { useFindAndModify: false, new: true } 
+                { useFindAndModify: false, new: true }
             );
             
         } catch(err) {

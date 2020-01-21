@@ -9,10 +9,6 @@ const StudentSchema = new mongoose.Schema({
     teacher: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'teacher',
-        required: [
-            true,
-            'Campo professor obrigatorio',
-        ]
     },
     student_training: {
         type: mongoose.Schema.Types.ObjectId,

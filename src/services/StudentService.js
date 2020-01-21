@@ -24,21 +24,9 @@ module.exports = {
 
             const isTeacher = await Teacher.findOne({ user });
 
-            if (isTeacher) return { msg: 'Usuario cadastrado ja e um professor' }
+            if (isTeacher) return { msg: 'Usuario cadastrado ja e um personal' }
 
             return await Student.create(student);
-        } catch(err) {
-            return err;
-        }
-    },
-
-    async update(_id, student) {
-        try {
-            const { user } = student;
-
-            if (user) return { msg: 'Nao eh permitida a alteracao de usuario' };
-
-            return await Student.findOneAndUpdate(_id, { $set: student }, { useFindAndModify: false, new: true });
         } catch(err) {
             return err;
         }

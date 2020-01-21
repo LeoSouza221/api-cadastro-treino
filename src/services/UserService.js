@@ -42,9 +42,7 @@ module.exports = {
             const { password } = user;
 
             if (!password) {
-
-                return await User.findOneAndUpdate(_id, { $set: user }, { useFindAndModify: false, new: true });
-
+                return await User.findByIdAndUpdate(_id, { $set: user }, { useFindAndModify: false, new: true });
             }
 
             return  { msg: 'Proibida alteracao de senha por essa rota' };

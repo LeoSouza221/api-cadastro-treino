@@ -34,18 +34,6 @@ module.exports = {
             });
     },
 
-    async update(req, res) {
-        const _id = req.params;
-        const student = req.body;
-
-        StudentService.update(_id, student)
-            .then(teacher => res.json(teacher))
-            .catch(error => {
-                console.error.bind(console, res.json(error));
-                res.json(error);
-            });
-    },
-
     async delete(req, res) {
         const _id = req.params;
 

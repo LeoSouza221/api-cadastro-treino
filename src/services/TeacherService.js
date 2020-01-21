@@ -47,7 +47,11 @@ module.exports = {
                 return { msg: 'Aluno ja cadastrado' };
             }
 
-            await Student.findByIdAndUpdate(_idStudent, { $set: { teacher: _id } }, { useFindAndModify: false, new: true });
+            await Student.findByIdAndUpdate(
+                _idStudent,
+                { $set: { teacher: _id } },
+                { useFindAndModify: false, new: true }
+            );
 
             return await Teacher.findByIdAndUpdate(
                 _id,

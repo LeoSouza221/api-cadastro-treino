@@ -8,6 +8,8 @@ const UserSchema = new mongoose.Schema({
             true,
             'Campo nome obrigatorio',
         ],
+        minlength: 4,
+        maxlength: 200
     },
     email: {
         type: String,
@@ -16,6 +18,8 @@ const UserSchema = new mongoose.Schema({
             true,
             'Campo email obrigatorio',
         ],
+        minlength: 4,
+        maxlength: 200
     },
     password: {
         type: String,
@@ -23,6 +27,8 @@ const UserSchema = new mongoose.Schema({
             true,
             'Campo senha obrigatorio',
         ],
+        minlength: 8,
+        maxlength: 50
     },
     photo: String,
 });

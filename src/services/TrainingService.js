@@ -27,17 +27,19 @@ module.exports = {
 
     async update(_id, _idExercice, exercice) {
         try {
-            return await Training.findOne(
-                { _id,  'exercices._id': _idExercice }
-                // { $set: { exercices: { _id: _idExercice,  }}},
-                // { useFindAndModify: false, new: true }
-            );
+            const { sequence } = exercice;
+            const { repetition } = exercice;
 
-            // return await Training.findOneAndUpdate(
-            //     _id,
-            //     { $set: { exercices: { _id: _idExercice,  }}},
-            //     { useFindAndModify: false, new: true }
-            // );
+            return await Training.findOne(
+                { _id }, 
+            ).then((training) => {
+                const pos = training.exercices.findIndex(exercice => exercice._id == _idExercice);
+                
+                if (sequence) training.exercices[pos].sequence = sequence; 
+                if (repetition) training.exercices[pos].repetition = repetition;
+
+                return training.save();
+            });
         } catch(err) {
             return err;
         }

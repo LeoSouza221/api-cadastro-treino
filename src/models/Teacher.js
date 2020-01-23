@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate');
 
 const TeacherSchema = new mongoose.Schema({
-    user : {
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref:'user',
     },

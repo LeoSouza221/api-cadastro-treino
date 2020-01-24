@@ -28,7 +28,7 @@ const UserSchema = new mongoose.Schema({
             'Campo senha obrigatorio',
         ],
         minlength: 8,
-        maxlength: 50
+        maxlength: 200
     },
     photo: String,
 });

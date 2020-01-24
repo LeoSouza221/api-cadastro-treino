@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const bcrypt = require('bcrypt');
 
 module.exports = {
     async index(page) {
@@ -20,13 +21,19 @@ module.exports = {
     async store(user) {
         try {
             const { email } = user;
-        
             let existUser = await User.findOne({ email });
             
             if (!existUser) {
-                existUser = await User.create(user);
+                const { password } = user;
+                let newUser;
 
-                return existUser;
+                await bcrypt.hash(password, 10)
+                    .then((password) => {
+                        newUser = Object.assign(user, { password });
+                    })
+                    .catch(errBcrypt => { return { error: errBcrypt }});
+
+                return await User.create(newUser);
             } 
             
             return { msg: 'Usuario ja cadastrado' };

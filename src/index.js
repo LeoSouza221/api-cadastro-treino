@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 
+const auth = require('./utils/auth');
 const userRouter = require('./routes/user');
 const teacherRouter = require('./routes/teacher');
 const studentRouter = require('./routes/student');
@@ -13,6 +14,7 @@ const studentTrainingRouter = require('./routes/studentTraining');
 app.use(express.json());
 
 // utiliza todas as rotas criadas no routes
+app.use(auth.validate);
 app.use('/api/user', userRouter);
 app.use('/api/teacher', teacherRouter);
 app.use('/api/student', studentRouter);

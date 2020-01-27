@@ -55,4 +55,15 @@ module.exports = {
                 res.json(error);
             });
     },
+
+    async login(req, res) {
+        const user = req.body;
+
+        UserService.login(user)
+            .then(msg => res.json(msg))
+            .catch(error => {
+                console.error.bind(console, `Error ${error}`); 
+                res.json(error);
+            });
+    }
 }

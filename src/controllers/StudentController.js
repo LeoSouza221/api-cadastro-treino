@@ -5,10 +5,10 @@ module.exports = {
         const { page = 1 } = req.query;
 
         StudentService.index(page)
-            .then(teacher => res.json(teacher))
+            .then(response => res.status(response.status).json(response.data))
             .catch(error => {
                 console.error.bind(console, res.json(error));
-                res.json(error);
+                res.status(error.status).json(error.err);
             });
     },
 
@@ -16,10 +16,10 @@ module.exports = {
         const _id = req.params;
 
         StudentService.show(_id)
-            .then(teacher => res.json(teacher))
+            .then(response => res.status(response.status).json(response.data))
             .catch(error => {
                 console.error.bind(console, res.json(error));
-                res.json(error);
+                res.status(error.status).json(error.err);
             });
     },
 
@@ -27,10 +27,10 @@ module.exports = {
         const student = req.body;
 
         StudentService.create(student)
-            .then(teacher => res.json(teacher))
+            .then(response => res.status(response.status).json(response.data))
             .catch(error => {
                 console.error.bind(console, res.json(error));
-                res.json(error);
+                res.status(error.status).json(error.err);
             });
     },
 
@@ -38,10 +38,10 @@ module.exports = {
         const _id = req.params;
 
         StudentService.destroy(_id)
-            .then(teacher => res.json(teacher))
+            .then(response => res.status(response.status).json(response.data))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
-                res.json(error);
+                res.status(error.status).json(error.err);
             });
     },
 }

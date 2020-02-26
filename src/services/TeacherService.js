@@ -4,33 +4,37 @@ const Student = require('../models/Student');
 module.exports = {
     async index(page) {
         try {
-            return await Teacher.paginate({}, { page, limit: 10 });
+            const data = await Teacher.paginate({}, { page, limit: 10 });
+            return { data, status: 200 };
         } catch(err) {
-            return err;
+            return { err, status: 204 };
         }
     },
 
     async show(_id) {
         try {
-            return await Teacher.findById(_id, '-students');
+            const data = await Teacher.findById(_id, '-students');
+            return { data, status: 200 };
         } catch(err) {
-            return err;
+            return { err, status: 204 };
         }
     },
 
     async showStudent(_id) {
         try {
-            return await Student.find({ teacher: _id });
+            const data = await Student.find({ teacher: _id });
+            return { data, status: 200 };
         } catch(err) {
-            return err;
+            return { err, status: 204 };
         }
     },
 
     async store(teacher) {
         try {
-            return await Teacher.create(teacher)
+            const data = await Teacher.create(teacher);
+            return { data, status: 201 };
         } catch(err) {
-            return err;
+            return { err, status: 204 };
         }
     },
 
@@ -40,11 +44,11 @@ module.exports = {
             const alreadyStudent = Teacher.find({ students: _idStudent });
 
             if (teacher && teacher.toString() !== _id.toString()) {
-                return { msg: 'Aluno ja pertence a outro personal' };
+                return { data: { msg: 'Aluno ja pertence a outro personal' }, status: 204};
             }
 
             if (alreadyStudent) {
-                return { msg: 'Aluno ja cadastrado' };
+                return { data: { msg: 'Aluno ja cadastrado' }, status: 204 };
             }
 
             await Student.findByIdAndUpdate(
@@ -53,13 +57,15 @@ module.exports = {
                 { useFindAndModify: false, new: true }
             );
 
-            return await Teacher.findByIdAndUpdate(
+            const data = await Teacher.findByIdAndUpdate(
                 _id,
                 { $push: { students: _idStudent }}, 
                 { useFindAndModify: false, new: true }
             );
+
+            return { data, status: 200 };
         } catch(err) {
-            return err;
+            return { err, status: 204 };
         }
     },
 
@@ -67,9 +73,9 @@ module.exports = {
         try {
             await Teacher.findByIdAndRemove(_id, { useFindAndModify: false } );
 
-            return { msg: 'Personal removido com sucesso' };
+            return { data: { msg: 'Personal removido com sucesso' }, status: 200 };
         } catch(err) {
-            return err;
+            return { err, status: 204 };
         }
     },
 
@@ -77,14 +83,16 @@ module.exports = {
         try {
             await Student.findByIdAndUpdate(_idStudent, { $set: { teacher: null } }, { useFindAndModify: false });
             
-            return await Teacher.findByIdAndUpdate(
+            const data = await Teacher.findByIdAndUpdate(
                 _id,
                 { $pull: { students: _idStudent }},
                 { useFindAndModify: false, new: true }
             );
+
+            return { data, status: 200 }
             
         } catch(err) {
-            return err;
+            return { err, status: 204 };
         }
     },
 }

@@ -5,10 +5,10 @@ module.exports = {
         const { page = 1 } = req.query;
 
         TrainingService.index(page)
-            .then(training => res.json(training))
+            .then(response => res.status(response.status).json(response.users))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
-                res.json(error);
+                res.status(error.status).json(error.err);
             });
     },
 
@@ -16,10 +16,10 @@ module.exports = {
         const _id = req.params;
 
         TrainingService.show(_id)
-            .then(training => res.json(training))
+            .then(response => res.status(response.status).json(response.users))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
-                res.json(error);
+                res.status(error.status).json(error.err);
             });
     },
 
@@ -27,10 +27,10 @@ module.exports = {
         const training = req.body;
 
         TrainingService.store(training)
-            .then(training => res.json(training))
+            .then(response => res.status(response.status).json(response.users))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
-                res.json(error);
+                res.status(error.status).json(error.err);
             });
     },
 
@@ -40,10 +40,10 @@ module.exports = {
         const exercice = req.body;
 
         TrainingService.update(_id, _idExercice, exercice)
-            .then(training => res.json(training))
+            .then(response => res.status(response.status).json(response.users))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
-                res.json(error);
+                res.status(error.status).json(error.err);
             });
     },
 
@@ -52,10 +52,10 @@ module.exports = {
         const exercice = req.body;
 
         TrainingService.updateExercice(_id, exercice)
-            .then(training => res.json(training))
+            .then(response => res.status(response.status).json(response.users))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
-                res.json(error);
+                res.status(error.status).json(error.err);
             });
     },
 
@@ -63,10 +63,10 @@ module.exports = {
         const _id = req.params;
 
         TrainingService.destroy(_id)
-            .then(training => res.json(training))
+            .then(response => res.status(response.status).json(response.users))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
-                res.json(error);
+                res.status(error.status).json(error.err);
             });
     },
 
@@ -75,10 +75,10 @@ module.exports = {
         const { _idExercice } = req.params;
 
         TrainingService.destroyExercice(_id, _idExercice)
-            .then(training => res.json(training))
+            .then(response => res.status(response.status).json(response.users))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
-                res.json(error);
+                res.status(error.status).json(error.err);
             });
     }
 }

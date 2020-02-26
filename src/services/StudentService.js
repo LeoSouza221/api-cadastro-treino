@@ -29,7 +29,7 @@ module.exports = {
 
             const data = await Student.create(student);
 
-            return { data, status: 200 };
+            return { data, status: 201 };
         } catch(err) {
             return { err, status: 204 };
         }

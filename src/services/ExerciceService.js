@@ -3,33 +3,37 @@ const Exercice = require('../models/Exercice');
 module.exports = {
     async index(page) {
         try {
-            return await Exercice.paginate({}, { page, limit: 10 });
+            const data = await Exercice.paginate({}, { page, limit: 10 });
+            return { data, status: 200 } 
         } catch(err) {
-            return err;
+            return { err, status: 204 };
         }
     },
 
     async show(_id) {
         try {
-            return await Exercice.findById(_id);
+            const data = await Exercice.findById(_id);
+            return { data, status: 200 };
         } catch(err) {
-            return err;
+            return { err, status: 204 };
         }
     },
 
     async store(exercice) {
         try {
-            return await Exercice.create(exercice);
+            const data = await Exercice.create(exercice);
+            return { data, status: 201 };
         } catch(err) {
-            return err;
+            return { err, status: 204 };
         }
     },
 
     async update(_id, exercice) {
         try {
-            return await Exercice.findByIdAndUpdate(_id, { $set: exercice }, { useFindAndModify: false, new: true });
+            const data = await Exercice.findByIdAndUpdate(_id, { $set: exercice }, { useFindAndModify: false, new: true });
+            return { data, status: 200 };
         } catch(err) {
-            return err;
+            return { err, status: 204 };
         }
     },
     
@@ -37,9 +41,9 @@ module.exports = {
         try {
             await Exercice.findByIdAndRemove(_id, { useFindAndModify: false } );
 
-            return { msg: 'Exercicio deletado com sucesso' };
+            return { data: { msg: 'Exercicio deletado com sucesso' }, status: 200};
         } catch(err) {
-            return err;   
+            return { err, status: 204 };
         }
     },
 };

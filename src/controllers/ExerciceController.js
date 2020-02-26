@@ -5,10 +5,10 @@ module.exports = {
         const { page = 1 } = req.query;
 
         ExerciceService.index(page)
-            .then(exercice => res.json(exercice))
+            .then(response => res.status(response.status).json(response.data))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
-                res.json(error);
+                res.status(error.status).json(error.err);
             });
     },
 
@@ -16,10 +16,10 @@ module.exports = {
         const _id = req.params;
 
         ExerciceService.show(_id)
-            .then(exercice => res.json(exercice))
+            .then(response => res.status(response.status).json(response.data))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
-                res.json(error);
+                res.status(error.status).json(error.err);
             });
     },
 
@@ -27,10 +27,10 @@ module.exports = {
         const exercice = req.body;
 
         ExerciceService.store(exercice)
-            .then(exercice => res.json(exercice))
+            .then(response => res.status(response.status).json(response.data))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
-                res.json(error);
+                res.status(error.status).json(error.err);
             });
     },
 
@@ -39,10 +39,10 @@ module.exports = {
         const exercice = req.body;
 
         ExerciceService.update(_id, exercice)
-            .then(exercice => res.json(exercice))
+            .then(response => res.status(response.status).json(response.data))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
-                res.json(error);
+                res.status(error.status).json(error.err);
             });
     },
      
@@ -50,10 +50,10 @@ module.exports = {
         const _id = req.params;
 
         ExerciceService.destroy(_id)
-            .then(exercice => res.json(exercice))
+            .then(response => res.status(response.status).json(response.data))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
-                res.json(error);
+                res.status(error.status).json(error.err);
             });
     },
 };

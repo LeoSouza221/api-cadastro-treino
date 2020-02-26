@@ -14,11 +14,10 @@ module.exports = {
                 }
                 next();
             })
+        } else if (req.url === '/api/user/login') {
+            next();
+            return;
         } else {
-            if (req.url === '/api/user/login') {
-                next();
-                return;
-            }
             return res.status(401).json({
                 success: false,
                 msg: '401 - unauthorized'

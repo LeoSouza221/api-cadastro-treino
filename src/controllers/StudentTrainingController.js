@@ -5,10 +5,10 @@ module.exports = {
         const { page = 1 } = req.query;
 
         StudentTrainingService.index(page)
-            .then(studTrain => res.json(studTrain))
+            .then(response => res.status(response.status).json(response.data))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
-                res.json(error);
+                res.status(error.status).json(error.err);
             });
     },
 
@@ -16,10 +16,10 @@ module.exports = {
         const _id = req.params;
 
         StudentTrainingService.show(_id)
-            .then(studTrain => res.json(studTrain))
+            .then(response => res.status(response.status).json(response.data))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
-                res.json(error);
+                res.status(error.status).json(error.err);
             });
     },
 
@@ -27,10 +27,10 @@ module.exports = {
         const studentTraining = req.body;
 
         StudentTrainingService.store(studentTraining)
-            .then(studTrain => res.json(studTrain))
+            .then(response => res.status(response.status).json(response.data))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
-                res.json(error);
+                res.status(error.status).json(error.err);
             });
     },
 
@@ -40,10 +40,10 @@ module.exports = {
         const studentTraining = req.body;
 
         StudentTrainingService.update(_id, _idTraining, studentTraining)
-            .then(studTrain => res.json(studTrain))
+            .then(response => res.status(response.status).json(response.data))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
-                res.json(error);
+                res.status(error.status).json(error.err);
             });
     },
 
@@ -52,10 +52,10 @@ module.exports = {
         const training = req.body;
 
         StudentTrainingService.updateTraining(_id, training)
-            .then(studTrain => res.json(studTrain))
+            .then(response => res.status(response.status).json(response.data))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
-                res.json(error);
+                res.status(error.status).json(error.err);
             });
     },
 
@@ -63,10 +63,10 @@ module.exports = {
         const _id = req.params;
 
         StudentTrainingService.destroy(_id)
-            .then(studTrain => res.json(studTrain))
+            .then(response => res.status(response.status).json(response.data))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
-                res.json(error);
+                res.status(error.status).json(error.err);
             });
     },
 
@@ -75,10 +75,10 @@ module.exports = {
         const { _idTraining } = req.params;
 
         StudentTrainingService.destroyTraining(_id, _idTraining)
-            .then(studTrain => res.json(studTrain))
+            .then(response => res.status(response.status).json(response.data))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
-                res.json(error);
+                res.status(error.status).json(error.err);
             });
     }
 }

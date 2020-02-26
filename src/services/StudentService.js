@@ -4,31 +4,34 @@ const Teacher = require('../models/Teacher');
 module.exports = {
     async index(page) {
         try {
-            return await Student.paginate({}, { page, limit: 10 });
+            const data = await Student.paginate({}, { page, limit: 10 });
+            return { data, status: 200 };
         } catch(err) {
-            return err;
+            return { err, status: 204 };
         }
     },
 
     async show(_id) {
         try {
-            return await Student.findById(_id);
+            const data = await Student.findById(_id);
+            return { data, status: 200 };
         } catch(err) {
-            return err;
+            return { err, status: 204 };
         }
     },
 
     async create(student) {
         try {
             const { user } = student;
-
             const isTeacher = await Teacher.findOne({ user });
 
-            if (isTeacher) return { msg: 'Usuario cadastrado ja e um personal' }
+            if (isTeacher) return { data: { msg: 'Usuario cadastrado ja e um personal' }, status: 200}
 
-            return await Student.create(student);
+            const data = await Student.create(student);
+
+            return { data, status: 201 };
         } catch(err) {
-            return err;
+            return { err, status: 204 };
         }
     },
 
@@ -36,9 +39,9 @@ module.exports = {
         try {
             await Student.findByIdAndRemove(_id, { useFindAndModify: false } );
 
-            return { msg: 'Estudante deletado com sucesso' };
+            return { data: { msg: 'Estudante deletado com sucesso' }, status: 200 };
         } catch(err) {
-            return err;
+            return { err, status: 204 };
         }
     },
 }

@@ -5,17 +5,19 @@ const jwt = require('jsonwebtoken');
 module.exports = {
     async index(page) {
         try {
-            return await User.paginate({}, { page, limit: 10 });
+            const data = await User.paginate({}, { page, limit: 10 });
+            return { data, status: 200 };
         } catch(err) {
-            return err;
+            return { err, status: 204 };
         }
     },
 
     async show(_id) {
         try {
-            return await User.findById(_id);
+            const data = await User.findById(_id);
+            return { data, status: 200 };
         } catch(err) {
-            return err;
+            return { err, status: 204 };
         }
     },
 
@@ -24,9 +26,10 @@ module.exports = {
             const { email, password } = user;
             const userAuthentication = await User.findOne({email});
             let token;
+            let status;
 
             if (!userAuthentication) {
-                return { msg: 'Erro de autenticacao' }
+                return { data: { msg: 'Erro de autenticacao' }, status: 401 }
             }
 
             await bcrypt.compare(password, userAuthentication.password)
@@ -40,13 +43,18 @@ module.exports = {
                         {
                             expiresIn: '1h',
                         });
+
+                        status = 200;
+
+                        return;
                     }
-                })
-                .catch(() => { return { msg: 'Erro de autenticacao' }});
+                    token = 'Erro de autenticacao';
+                    status = 401;
+                });
             
-            return { token };
+            return { data: token, status };
         } catch(err) {
-            return err;
+            return { err, status: 204 };
         }
     },
 
@@ -64,14 +72,16 @@ module.exports = {
                         newUser = Object.assign(user, { password });
                     })
                     .catch(errBcrypt => { return { error: errBcrypt }});
+                
+                const data = await User.create(newUser);
 
-                return await User.create(newUser);
+                return { data, status: 201 };
             } 
             
-            return { msg: 'Usuario ja cadastrado' };
+            return { data: { msg: 'Usuario ja cadastrado' }, status: 400 };
     
         } catch(err) {
-            return err;
+            return { err, status: 204 };
         }
         
     },
@@ -81,12 +91,13 @@ module.exports = {
             const { password } = user;
 
             if (!password) {
-                return await User.findByIdAndUpdate(_id, { $set: user }, { useFindAndModify: false, new: true });
+                const data = await User.findByIdAndUpdate(_id, { $set: user }, { useFindAndModify: false, new: true });
+                return { data, status: 200 }
             }
 
-            return  { msg: 'Proibida alteracao de senha por essa rota' };
+            return  { data: { msg: 'Proibida alteracao de senha por essa rota' }, status: 400 };
         } catch(err) {
-            return err;
+            return { err, status: 204 };
         }
     },
 
@@ -94,10 +105,10 @@ module.exports = {
         try {
             await User.findByIdAndRemove(_id, { useFindAndModify: false } );
 
-            return { msg: 'Usuario deletado com sucesso' };
+            return { data: { msg: 'Usuario deletado com sucesso' }, status: 200 };
 
         } catch(err) {
-            return err;
+            return { err, status: 204 };
         }
     },
 }

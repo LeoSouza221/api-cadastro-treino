@@ -6,10 +6,10 @@ module.exports = {
         const { page = 1 } = req.query;
         
         UserService.index(page)
-            .then(user => res.json(user))
+            .then(response => res.status(response.status).json(response.users))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
-                res.json(error);
+                res.status(error.status).json(error.err);
             });
     },
 
@@ -20,16 +20,16 @@ module.exports = {
             .then(user => res.json(user))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
-                res.json(error);
+                res.status(error.status).json(error.err);
             });
     },
 
     async create(req, res) {
         UserService.store(req.body)
-            .then(user => res.json(user))
+            .then(response => res.status(response.status).json(response.data))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
-                res.json(error);
+                res.status(error.status).json(error.err);
             });
     },
 
@@ -38,10 +38,10 @@ module.exports = {
         const userInfo = req.body;
         
         UserService.update(_id, userInfo)
-            .then(user => res.json(user))
+            .then(response => res.status(response.status).json(response.data))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
-                res.json(error);
+                res.status(error.status).json(error.err);
             });
     },
 
@@ -49,10 +49,10 @@ module.exports = {
         const _id = req.params;
 
         UserService.destroy(_id)
-            .then(msg => res.json(msg))
+            .then(response => res.status(response.status).json(response.data))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
-                res.json(error);
+                res.status(error.status).json(error.err);
             });
     },
 
@@ -60,10 +60,10 @@ module.exports = {
         const user = req.body;
 
         UserService.login(user)
-            .then(msg => res.json(msg))
+            .then(response => res.status(response.status).json(response.data))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
-                res.json(error);
+                res.status(error.status).json(error.err);
             });
     }
 }

@@ -6,7 +6,7 @@ module.exports = {
         const { page = 1 } = req.query;
         
         UserService.index(page)
-            .then(response => res.status(response.status).json(response.users))
+            .then(response => res.status(response.status).json(response.data))
             .catch(error => {
                 console.error.bind(console, `Error ${error}`); 
                 res.status(error.status).json(error.err);

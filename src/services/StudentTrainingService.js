@@ -3,25 +3,28 @@ const StudentTraining = require('../models/StudentTraining');
 module.exports = {
     async index(page) {
         try {
-            return await StudentTraining.paginate({}, { page, limit: 10 });
+            const data = await StudentTraining.paginate({}, { page, limit: 10 });
+            return { data, status: 200 };
         } catch(err) {
-            return err;
+            return { err, status: 204 };
         }
     },
 
     async show(_id) {
         try {
-            return await StudentTraining.findById(_id);
+            const data = await StudentTraining.findById(_id);
+            return { data, status: 200 };
         } catch(err) {
-            return err;
+            return { err, status: 204 };
         }
     },
 
     async store(studentTraining) {
         try {
-            return await StudentTraining.create(studentTraining);
+            const data = await StudentTraining.create(studentTraining);
+            return { data, status: 201 };
         } catch(err) {
-            return err;
+            return { err, status: 204 };
         }
     },
 
@@ -31,7 +34,7 @@ module.exports = {
             const { name } = studentTraining;
             const { training_type } = studentTraining;
 
-            return await StudentTraining.findOne(
+            const data = await StudentTraining.findOne(
                 { _id },
             ).then((trng) => {
                 const pos = trng.trainings.findIndex(training => training._id == _idTraining);
@@ -42,20 +45,23 @@ module.exports = {
 
                 return trng.save();
             });
+
+            return { data, status: 200 };
         } catch(err) {
-            return err;
+            return { err, status: 204 };
         }
     },
 
     async updateTraining(_id, training) {
         try {
-            return await StudentTraining.findByIdAndUpdate(
+            const data = await StudentTraining.findByIdAndUpdate(
                 _id,
                 { $push: { trainings: training}},
                 { useFindAndModify: false, new: true }
             );
+            return { data, status: 200 };
         } catch(err) {
-            return err;
+            return { err, status: 204 };
         }
     },
 
@@ -63,23 +69,22 @@ module.exports = {
         try {
             await StudentTraining.findByIdAndRemove(_id);
 
-            return { msg: 'Treino apagado com sucesso' };
+            return { data: { msg: 'Treino apagado com sucesso' }, status: 200};
         } catch(err) {
-            return err;
+            return { err, status: 204 };
         }
     },
 
     async destroyTraining(_id, _idTraining) {
         try {
-            return await StudentTraining.findByIdAndUpdate(
+            const data = await StudentTraining.findByIdAndUpdate(
                 _id,
                 { $pull: { trainings: { _id: _idTraining }}},
                 { useFindAndModify: false, new: true }
             );
-
-            return { msg: 'Treino apagado com sucesso' };
+            return { data, status: 200 };                
         } catch(err) {
-            return err;
+            return { err, status: 204 };
         }
     },
 }
